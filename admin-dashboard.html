@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - Student Course Management System</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.admin-stats{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+padding:30px;
+}
+
+.stat-card{
+background:white;
+width:220px;
+padding:25px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+.stat-card h2{
+color:#2563eb;
+margin-bottom:10px;
+}
+
+.admin-actions{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+padding:20px;
+}
+
+.action-btn{
+display:inline-block;
+padding:15px 25px;
+background:#2563eb;
+color:white;
+text-decoration:none;
+border-radius:10px;
+}
+
+.action-btn:hover{
+background:#1d4ed8;
+}
+
+.recent-section{
+max-width:1000px;
+margin:30px auto;
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+table th, table td{
+padding:12px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+table th{
+background:#2563eb;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="logo">🎓 SCMS Admin</div>
+
+<ul class="nav-links">
+<li><a href="admin-dashboard.html">Dashboard</a></li>
+<li><a href="add-course.html">Add Course</a></li>
+<li><a href="edit-course.html">Manage Courses</a></li>
+<li><a href="login.html">Logout</a></li>
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<h1>Administrator Dashboard</h1>
+
+<p>
+Manage students, courses, enrollments and platform activities.
+</p>
+
+</section>
+
+<div class="admin-stats">
+
+<div class="stat-card">
+<h2>2500+</h2>
+<p>Total Students</p>
+</div>
+
+<div class="stat-card">
+<h2>120+</h2>
+<p>Total Courses</p>
+</div>
+
+<div class="stat-card">
+<h2>5000+</h2>
+<p>Enrollments</p>
+</div>
+
+<div class="stat-card">
+<h2>98%</h2>
+<p>Completion Rate</p>
+</div>
+
+</div>
+
+<div class="admin-actions">
+
+<a href="add-course.html" class="action-btn">
+➕ Add New Course
+</a>
+
+<a href="edit-course.html" class="action-btn">
+✏ Manage Courses
+</a>
+
+</div>
+
+<div class="recent-section">
+
+<h2>📋 Recent Enrollments</h2>
+
+<table>
+
+<tr>
+<th>Student Name</th>
+<th>Course</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>Priyadharshini S</td>
+<td>Artificial Intelligence</td>
+<td>Active</td>
+</tr>
+
+<tr>
+<td>Rahul Kumar</td>
+<td>Python Programming</td>
+<td>Completed</td>
+</tr>
+
+<tr>
+<td>Sneha R</td>
+<td>Data Science</td>
+<td>Active</td>
+</tr>
+
+<tr>
+<td>Arjun K</td>
+<td>Full Stack Development</td>
+<td>Completed</td>
+</tr>
+
+</table>
+
+</div>
+
+<footer class="footer">
+
+<h3>Student Course Management System</h3>
+
+<p>Administrator Portal</p>
+
+<p>© 2026 All Rights Reserved</p>
+
+</footer>
+
+</body>
+</html>

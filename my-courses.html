@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Courses - Student Course Management System</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.course-container{
+padding:40px;
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+}
+
+.my-course-card{
+background:white;
+width:350px;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.my-course-card:hover{
+transform:translateY(-8px);
+}
+
+.progress-bar{
+width:100%;
+height:15px;
+background:#e2e8f0;
+border-radius:20px;
+overflow:hidden;
+margin:15px 0;
+}
+
+.progress-fill{
+height:100%;
+background:#2563eb;
+}
+
+.continue-btn{
+display:block;
+width:100%;
+padding:12px;
+background:#2563eb;
+color:white;
+text-align:center;
+text-decoration:none;
+border-radius:10px;
+margin-top:15px;
+}
+
+.continue-btn:hover{
+background:#1d4ed8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="logo">🎓 SCMS</div>
+
+<ul class="nav-links">
+<li><a href="student-dashboard.html">Dashboard</a></li>
+<li><a href="my-courses.html">My Courses</a></li>
+<li><a href="progress.html">Progress</a></li>
+<li><a href="notifications.html">Notifications</a></li>
+<li><a href="login.html">Logout</a></li>
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<h1>My Enrolled Courses</h1>
+
+<p>
+Track your enrolled courses and continue your learning journey.
+</p>
+
+</section>
+
+<h2 class="section-title">📚 Enrolled Courses</h2>
+
+<div class="course-container">
+
+<div class="my-course-card">
+
+<h3>Artificial Intelligence</h3>
+
+<p>Instructor: Dr. John Smith</p>
+
+<p>Status: Ongoing</p>
+
+<p>Progress: 75%</p>
+
+<div class="progress-bar">
+<div class="progress-fill" style="width:75%;"></div>
+</div

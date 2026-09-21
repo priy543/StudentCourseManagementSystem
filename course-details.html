@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course Details - Student Course Management System</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.course-details{
+max-width:1000px;
+margin:40px auto;
+background:white;
+padding:35px;
+border-radius:20px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+.course-details h2{
+color:#2563eb;
+margin-bottom:15px;
+}
+
+.info-grid{
+display:flex;
+justify-content:space-between;
+flex-wrap:wrap;
+margin:20px 0;
+gap:15px;
+}
+
+.info-box{
+background:#f8fafc;
+padding:15px;
+border-radius:12px;
+flex:1;
+min-width:200px;
+text-align:center;
+}
+
+.module-list{
+margin-top:20px;
+}
+
+.module-list li{
+margin:10px 0;
+padding:10px;
+background:#f1f5f9;
+border-radius:10px;
+list-style:none;
+}
+
+.enroll-btn{
+display:block;
+width:250px;
+margin:30px auto;
+padding:15px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:16px;
+}
+
+.enroll-btn:hover{
+background:#1d4ed8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="logo">🎓 SCMS</div>
+
+<ul class="nav-links">
+<li><a href="student-dashboard.html">Dashboard</a></li>
+<li><a href="browse-courses.html">Courses</a></li>
+<li><a href="progress.html">Progress</a></li>
+<li><a href="notifications.html">Notifications</a></li>
+<li><a href="login.html">Logout</a></li>
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<h1>Artificial Intelligence</h1>
+
+<p>
+Master AI technologies and build intelligent systems for real-world applications.
+</p>
+
+</section>
+
+<div class="course-details">
+
+<h2>📖 Course Overview</h2>
+
+<p>
+Artificial Intelligence is one of the fastest-growing fields in technology.
+This course introduces students to machine learning, neural networks,
+deep learning and AI applications used in healthcare, business,
+robotics and data analytics.
+</p>
+
+<div class="info-grid">
+
+<div class="info-box">
+<h3>👨‍🏫 Instructor</h3>
+<p>Dr. John Smith</p>
+</div>
+
+<div class="info-box">
+<h3>⏱ Duration</h3>
+<p>12 Weeks</p>
+</div>
+
+<div class="info-box">
+<h3>⭐ Rating</h3>
+<p>4.8 / 5</p>
+</div>
+
+<div class="info-box">
+<h3>🎓 Level</h3>
+<p>Intermediate</p>
+</div>
+
+</div>
+
+<h2>📚 Course Modules</h2>
+
+<ul class="module-list">
+
+<li>Module 1 – Introduction to Artificial Intelligence</li>
+
+<li>Module 2 – Python for AI</li>
+
+<li>Module 3 – Machine Learning Fundamentals</li>
+
+<li>Module 4 – Data Preprocessing</li>
+
+<li>Module 5 – Neural Networks</li>
+
+<li>Module 6 – Deep Learning</li>
+
+<li>Module 7 – Natural Language Processing</li>
+
+<li>Module 8 – Computer Vision</li>
+
+<li>Module 9 – AI Project Development</li>
+
+<li>Module 10 – Final Assessment</li>
+
+</ul>
+
+<h2>🎯 Learning Outcomes</h2>
+
+<ul class="module-list">
+
+<li>Understand AI concepts and techniques</li>
+
+<li>Build machine learning models</li>
+
+<li>Develop AI-powered applications</li>
+
+<li>Analyze datasets efficiently</li>
+
+<li>Work on real-world AI projects</li>
+
+</ul>
+
+<button class="enroll-btn" onclick="enrollCourse()">
+Enroll Now
+</button>
+
+</div>
+
+<footer class="footer">
+
+<h3>Student Course Management System</h3>
+
+<p>Learn • Progress • Achieve</p>
+
+<p>© 2026 All Rights Reserved</p>
+
+</footer>
+
+<script>
+
+function enrollCourse()
+{
+window.location.href="enrollment-success.html";
+}
+
+</script>
+
+</body>
+</html>

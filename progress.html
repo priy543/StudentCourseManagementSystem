@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progress Tracking - Student Course Management System</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.progress-container{
+max-width:1000px;
+margin:40px auto;
+padding:20px;
+}
+
+.progress-card{
+background:white;
+padding:25px;
+margin-bottom:20px;
+border-radius:20px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+.progress-bar{
+width:100%;
+height:20px;
+background:#e2e8f0;
+border-radius:20px;
+overflow:hidden;
+margin-top:15px;
+}
+
+.progress-fill{
+height:100%;
+background:#2563eb;
+}
+
+.summary{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+padding:20px;
+}
+
+.summary-box{
+background:white;
+padding:25px;
+width:220px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+.summary-box h2{
+color:#2563eb;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="logo">🎓 SCMS</div>
+
+<ul class="nav-links">
+<li><a href="student-dashboard.html">Dashboard</a></li>
+<li><a href="my-courses.html">My Courses</a></li>
+<li><a href="progress.html">Progress</a></li>
+<li><a href="notifications.html">Notifications</a></li>
+<li><a href="login.html">Logout</a></li>
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<h1>Learning Progress</h1>
+
+<p>
+Monitor your performance and course completion status.
+</p>
+
+</section>
+
+<h2 class="section-title">📊 Progress Summary</h2>
+
+<div class="summary">
+
+<div class="summary-box">
+<h2>12</h2>
+<p>Enrolled Courses</p>
+</div>
+
+<div class="summary-box">
+<h2>8</h2>
+<p>Completed Courses</p>
+</div>
+
+<div class="summary-box">
+<h2>4</h2>
+<p>Active Courses</p>
+</div>
+
+<div class="summary-box">
+<h2>78%</h2>
+<p>Overall Progress</p>
+</div>
+
+</div>
+
+<div class="progress-container">
+
+<div class="progress-card">
+
+<h3>Artificial Intelligence</h3>
+
+<p>Progress: 75%</p>
+
+<div class="progress-bar">
+<div class="progress-fill" style="width:75%;"></div>
+</div>
+
+</div>
+
+<div class="progress-card">
+
+<h3>Python Programming</h3>
+
+<p>Progress: 90%</p>
+
+<div class="progress-bar">
+<div class="progress-fill" style="width:90%;"></div>
+</div>
+
+</div>
+
+<div class="progress-card">
+
+<h3>Full Stack Development</h3>
+
+<p>Progress: 65%</p>
+
+<div class="progress-bar">
+<div class="progress-fill" style="width:65%;"></div>
+</div>
+
+</div>
+
+<div class="progress-card">
+
+<h3>Data Science</h3>
+
+<p>Progress: 100%</p>
+
+<div class="progress-bar">
+<div class="progress-fill" style="width:100%;"></div>
+</div>
+
+</div>
+
+</div>
+
+<footer class="footer">
+
+<h3>Student Course Management System</h3>
+
+<p>Learn • Progress • Achieve</p>
+
+<p>© 2026 All Rights Reserved</p>
+
+</footer>
+
+</body>
+</html>

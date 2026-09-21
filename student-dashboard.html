@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Dashboard - Student Course Management System</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.dashboard-grid{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+padding:40px 20px;
+}
+
+.dashboard-card{
+background:white;
+width:220px;
+padding:25px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.dashboard-card:hover{
+transform:translateY(-8px);
+}
+
+.dashboard-card h2{
+color:#2563eb;
+font-size:36px;
+margin-bottom:10px;
+}
+
+.quick-links{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+padding:20px;
+}
+
+.quick-links a{
+text-decoration:none;
+background:#2563eb;
+color:white;
+padding:12px 20px;
+border-radius:10px;
+}
+
+.profile-section{
+max-width:1000px;
+margin:40px auto;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="logo">🎓 SCMS</div>
+
+<ul class="nav-links">
+
+<li><a href="student-dashboard.html">Dashboard</a></li>
+
+<li><a href="browse-courses.html">Courses</a></li>
+
+<li><a href="progress.html">Progress</a></li>
+
+<li><a href="notifications.html">Notifications</a></li>
+
+<li><a href="#" onclick="logoutUser()">Logout</a></li>
+
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<h1 id="welcome">Welcome Back!</h1>
+
+<p>
+Track your learning journey, manage enrolled courses
+and monitor your academic progress.
+</p>
+
+</section>
+
+<div class="profile-section">
+
+<h2>👤 Student Profile</h2>
+
+<br>
+
+<p><strong>Name:</strong> <span id="studentName"></span></p>
+
+<p><strong>Department:</strong> <span id="studentDepartment"></span></p>
+
+<p><strong>Email:</strong> <span id="studentEmail"></span></p>
+
+<p><strong>Status:</strong> Active Learner</p>
+
+</div>
+
+<h2 class="section-title">📊 Dashboard Overview</h2>
+
+<div class="dashboard-grid">
+
+<div class="dashboard-card">
+<h2>12</h2>
+<p>📚 Enrolled Courses</p>
+</div>
+
+<div class="dashboard-card">
+<h2>8</h2>
+<p>✅ Completed Courses</p>
+</div>
+
+<div class="dashboard-card">
+<h2>4</h2>
+<p>🎯 Active Courses</p>
+</div>
+
+<div class="dashboard-card">
+<h2>78%</h2>
+<p>📈 Overall Progress</p>
+</div>
+
+<div class="dashboard-card">
+<h2>5</h2>
+<p>🏆 Certificates Earned</p>
+</div>
+
+<div class="dashboard-card">
+<h2>15</h2>
+<p>🔥 Learning Streak</p>
+</div>
+
+<div class="dashboard-card">
+<h2>3</h2>
+<p>📝 Pending Assignments</p>
+</div>
+
+<div class="dashboard-card">
+<h2>7</h2>
+<p>🔔 Notifications</p>
+</div>
+
+</div>
+
+<h2 class="section-title">⚡ Quick Actions</h2>
+
+<div class="quick-links">
+
+<a href="browse-courses.html">Browse Courses</a>
+
+<a href="progress.html">View Progress</a>
+
+<a href="certificate.html">Certificates</a>
+
+<a href="notifications.html">Notifications</a>
+
+</div>
+
+<footer class="footer">
+
+<h3>Student Course Management System</h3>
+
+<p>Learn • Progress • Achieve</p>
+
+</footer>
+
+<script src="js/storage.js"></script>
+
+<script>
+
+let student = getStudent();
+
+if(student){
+
+document.getElementById("welcome").innerHTML =
+"Welcome Back, " + student.name + "!";
+
+document.getElementById("studentName").innerHTML =
+student.name;
+
+document.getElementById("studentDepartment").innerHTML =
+student.department;
+
+document.getElementById("studentEmail").innerHTML =
+student.email;
+
+}
+else{
+
+alert("Please Login First");
+
+window.location.href="login.html";
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learnify LMS</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:#f4f7ff;
+}
+
+/* NAVBAR */
+
+nav{
+background:#0f172a;
+padding:15px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+color:white;
+font-size:28px;
+font-weight:bold;
+}
+
+nav ul{
+display:flex;
+list-style:none;
+}
+
+nav ul li{
+margin-left:25px;
+}
+
+nav ul li a{
+text-decoration:none;
+color:white;
+font-weight:bold;
+}
+
+nav ul li a:hover{
+color:#38bdf8;
+}
+
+/* HERO */
+
+.hero{
+background:linear-gradient(135deg,#2563eb,#06b6d4);
+color:white;
+text-align:center;
+padding:100px 20px;
+}
+
+.hero h1{
+font-size:55px;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:20px;
+margin-bottom:30px;
+}
+
+.search-box{
+max-width:600px;
+margin:auto;
+display:flex;
+}
+
+.search-box input{
+flex:1;
+padding:15px;
+border:none;
+outline:none;
+border-radius:10px 0 0 10px;
+}
+
+.search-box button{
+padding:15px 25px;
+border:none;
+background:#facc15;
+font-weight:bold;
+border-radius:0 10px 10px 0;
+cursor:pointer;
+}
+
+/* STATS */
+
+.stats{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+padding:50px 20px;
+}
+
+.stat{
+background:white;
+padding:25px;
+width:220px;
+text-align:center;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.stat h2{
+color:#2563eb;
+font-size:40px;
+}
+
+/* SECTION */
+
+.section-title{
+text-align:center;
+font-size:35px;
+margin:50px 0 30px;
+color:#0f172a;
+}
+
+/* COURSES */
+
+.courses{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+padding:20px;
+}
+
+.course{
+background:white;
+width:300px;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.course:hover{
+transform:translateY(-10px);
+}
+
+.course h3{
+color:#2563eb;
+margin-bottom:10px;
+}
+
+.course button{
+width:100%;
+padding:12px;
+border:none;
+background:#2563eb;
+color:white;
+border-radius:10px;
+cursor:pointer;
+margin-top:15px;
+}
+
+/* ROADMAP */
+
+.roadmap{
+text-align:center;
+padding:50px;
+font-size:22px;
+line-height:2.5;
+font-weight:bold;
+color:#334155;
+}
+
+/* ANNOUNCEMENTS */
+
+.announce{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+.notice{
+background:white;
+padding:20px;
+margin:15px 0;
+border-left:6px solid #2563eb;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* TESTIMONIALS */
+
+.testimonials{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+padding:20px;
+}
+
+.review{
+background:white;
+width:300px;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* FAQ */
+
+.faq{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+details{
+background:white;
+margin:10px 0;
+padding:15px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* CONTACT */
+
+.contact{
+background:#e0f2fe;
+padding:50px;
+text-align:center;
+}
+
+.contact h2{
+margin-bottom:20px;
+}
+
+.contact p{
+margin:10px;
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+color:white;
+text-align:center;
+padding:25px;
+}
+
+.logout{
+background:#ef4444;
+padding:8px 15px;
+border-radius:8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">🎓 Learnify LMS</div>
+
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#courses">Courses</a></li>
+<li><a href="#roadmap">Roadmap</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="login.html" class="logout">Logout</a></li>
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<h1>Transform Your Future Through Learning</h1>
+
+<p>Explore courses, track progress and earn certificates.</p>
+
+<div class="search-box">
+<input type="text" placeholder="Search Courses...">
+<button>Search</button>
+</div>
+
+</section>
+
+<div class="stats">
+
+<div class="stat">
+<h2>500+</h2>
+<p>Students</p>
+</div>
+
+<div class="stat">
+<h2>50+</h2>
+<p>Courses</p>
+</div>
+
+<div class="stat">
+<h2>1000+</h2>
+<p>Certificates</p>
+</div>
+
+<div class="stat">
+<h2>95%</h2>
+<p>Satisfaction</p>
+</div>
+
+</div>
+
+<h2 class="section-title" id="courses">🔥 Trending Courses</h2>
+
+<div class="courses">
+
+<div class="course">
+<h3>Artificial Intelligence</h3>
+<p>Learn ML, Deep Learning and NLP.</p>
+<button onclick="alert('Enrolled Successfully')">Enroll</button>
+</div>
+
+<div class="course">
+<h3>Full Stack Development</h3>
+<p>HTML, CSS, JavaScript, Node.js and MongoDB.</p>
+<button onclick="alert('Enrolled Successfully')">Enroll</button>
+</div>
+
+<div class="course">
+<h3>Data Science</h3>
+<p>Analyze and visualize real-world data.</p>
+<button onclick="alert('Enrolled Successfully')">Enroll</button>
+</div>
+
+</div>
+
+<h2 class="section-title" id="roadmap">🛤 Learning Roadmap</h2>
+
+<div class="roadmap">
+
+Beginner<br>
+⬇<br>
+Intermediate<br>
+⬇<br>
+Advanced<br>
+⬇<br>
+Certification
+
+</div>
+
+<h2 class="section-title">📢 Announcements</h2>
+
+<div class="announce">
+
+<div class="notice">
+New AI Course available from next week.
+</div>
+
+<div class="notice">
+Project submission deadline extended.
+</div>
+
+<div class="notice">
+Web Development Workshop on Friday.
+</div>
+
+</div>
+
+<h2 class="section-title">💬 Student Reviews</h2>
+
+<div class="testimonials">
+
+<div class="review">
+⭐⭐⭐⭐⭐<br><br>
+The platform helped me improve my programming skills.
+</div>
+
+<div class="review">
+⭐⭐⭐⭐⭐<br><br>
+Easy to use and track learning progress.
+</div>
+
+<div class="review">
+⭐⭐⭐⭐⭐<br><br>
+Excellent courses and certification support.
+</div>
+
+</div>
+
+<h2 class="section-title" id="faq">❓ FAQ</h2>
+
+<div class="faq">
+
+<details>
+<summary>How do I enroll in a course?</summary>
+<p>Click the Enroll button on any course card.</p>
+</details>
+
+<details>
+<summary>Can I get certificates?</summary>
+<p>Yes, after course completion.</p>
+</details>
+
+<details>
+<summary>Is progress tracked automatically?</summary>
+<p>Yes, the system tracks your learning progress.</p>
+</details>
+
+</div>
+
+<div class="contact">
+
+<h2>📞 Contact Us</h2>
+
+<p>Email: support@learnify.com</p>
+
+<p>Phone: +91 9876543210</p>
+
+<p>Location: Chennai, Tamil Nadu</p>
+
+</div>
+
+<footer>
+
+<h3>© 2026 Learnify LMS</h3>
+
+<p>Learn • Grow • Succeed</p>
+
+</footer>
+
+</body>
+</html>
