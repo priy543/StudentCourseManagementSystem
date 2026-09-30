@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browse Courses - Student Course Management System</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.search-box{
+text-align:center;
+padding:30px;
+}
+
+.search-box input{
+width:60%;
+max-width:500px;
+padding:12px;
+border:1px solid #cbd5e1;
+border-radius:10px;
+font-size:16px;
+outline:none;
+}
+
+.course-grid{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+padding:30px;
+}
+
+.course-card{
+background:white;
+width:320px;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.course-card:hover{
+transform:translateY(-10px);
+}
+
+.course-card h3{
+color:#2563eb;
+margin-bottom:10px;
+}
+
+.course-card p{
+margin:8px 0;
+}
+
+.course-card button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+background:#2563eb;
+color:white;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+}
+
+.course-card button:hover{
+background:#1d4ed8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="logo">🎓 SCMS</div>
+
+<ul class="nav-links">
+<li><a href="student-dashboard.html">Dashboard</a></li>
+<li><a href="browse-courses.html">Courses</a></li>
+<li><a href="progress.html">Progress</a></li>
+<li><a href="notifications.html">Notifications</a></li>
+<li><a href="login.html">Logout</a></li>
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<h1>Browse Courses</h1>
+
+<p>
+Explore professional courses and enhance your skills through structured learning.
+</p>
+
+</section>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="🔍 Search Courses..."
+onkeyup="searchCourses()">
+
+</div>
+
+<h2 class="section-title">📚 Explore Our Professional Courses</h2>
+
+<div class="course-grid">
+
+<div class="course-card">
+<h3>Artificial Intelligence</h3>
+<p>👨‍🏫 Instructor: Dr. John Smith</p>
+<p>⏱ Duration: 12 Weeks</p>
+<p>⭐ Rating: 4.8/5</p>
+<p>Learn machine learning, deep learning and AI applications.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Full Stack Development</h3>
+<p>👨‍🏫 Instructor: Prof. David</p>
+<p>⏱ Duration: 10 Weeks</p>
+<p>⭐ Rating: 4.7/5</p>
+<p>Master HTML, CSS, JavaScript, Node.js and MongoDB.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Python Programming</h3>
+<p>👨‍🏫 Instructor: Dr. Michael</p>
+<p>⏱ Duration: 8 Weeks</p>
+<p>⭐ Rating: 4.9/5</p>
+<p>Learn Python programming from basics to advanced concepts.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Data Science</h3>
+<p>👨‍🏫 Instructor: Dr. Sarah</p>
+<p>⏱ Duration: 14 Weeks</p>
+<p>⭐ Rating: 4.8/5</p>
+<p>Data analysis, visualization and predictive modeling.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Cyber Security</h3>
+<p>👨‍🏫 Instructor: Dr. Robert</p>
+<p>⏱ Duration: 10 Weeks</p>
+<p>⭐ Rating: 4.8/5</p>
+<p>Learn network security, ethical hacking and cyber defense.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Cloud Computing</h3>
+<p>👨‍🏫 Instructor: Prof. Williams</p>
+<p>⏱ Duration: 8 Weeks</p>
+<p>⭐ Rating: 4.7/5</p>
+<p>Master AWS, Azure and cloud deployment technologies.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Machine Learning</h3>
+<p>👨‍🏫 Instructor: Dr. Emily</p>
+<p>⏱ Duration: 12 Weeks</p>
+<p>⭐ Rating: 4.9/5</p>
+<p>Build predictive models and intelligent systems.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Java Programming</h3>
+<p>👨‍🏫 Instructor: Prof. Anderson</p>
+<p>⏱ Duration: 8 Weeks</p>
+<p>⭐ Rating: 4.6/5</p>
+<p>Learn object-oriented programming using Java.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Database Management System</h3>
+<p>👨‍🏫 Instructor: Dr. Thomas</p>
+<p>⏱ Duration: 6 Weeks</p>
+<p>⭐ Rating: 4.7/5</p>
+<p>Understand SQL, normalization and database design.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Mobile App Development</h3>
+<p>👨‍🏫 Instructor: Dr. Jennifer</p>
+<p>⏱ Duration: 10 Weeks</p>
+<p>⭐ Rating: 4.8/5</p>
+<p>Create Android and cross-platform mobile applications.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Internet of Things (IoT)</h3>
+<p>👨‍🏫 Instructor: Prof. Kevin</p>
+<p>⏱ Duration: 9 Weeks</p>
+<p>⭐ Rating: 4.7/5</p>
+<p>Connect devices and build smart systems using IoT.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+<div class="course-card">
+<h3>Data Analytics</h3>
+<p>👨‍🏫 Instructor: Dr. Sophia</p>
+<p>⏱ Duration: 8 Weeks</p>
+<p>⭐ Rating: 4.8/5</p>
+<p>Analyze and visualize data for business insights.</p>
+<button onclick="viewCourse()">View Details</button>
+</div>
+
+</div>
+
+<footer class="footer">
+
+<h3>Student Course Management System</h3>
+
+<p>Learn • Progress • Achieve</p>
+
+<p>© 2026 All Rights Reserved</p>
+
+</footer>
+
+<script>
+
+function viewCourse()
+{
+window.location.href="course-details.html";
+}
+
+function searchCourses()
+{
+let input =
+document.getElementById("searchInput").value.toLowerCase();
+
+let courses =
+document.getElementsByClassName("course-card");
+
+for(let i=0;i<courses.length;i++)
+{
+let title =
+courses[i]
+.getElementsByTagName("h3")[0]
+.innerText
+.toLowerCase();
+
+if(title.includes(input))
+{
+courses[i].style.display="block";
+}
+else
+{
+courses[i].style.display="none";
+}
+}
+}
+
+</script>
+
+</body>
+</html>

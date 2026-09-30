@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register - Student Course Management System</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="auth-container">
+
+<div class="auth-box">
+
+<h1>Student Registration</h1>
+
+<form>
+
+<input
+type="text"
+id="name"
+placeholder="Full Name"
+required>
+
+<input
+type="email"
+id="email"
+placeholder="Email Address"
+required>
+
+<input
+type="password"
+id="password"
+placeholder="Create Password"
+required>
+
+<input
+type="password"
+id="confirmPassword"
+placeholder="Confirm Password"
+required>
+
+<input
+type="text"
+id="department"
+placeholder="Department"
+required>
+
+<select
+id="course"
+required>
+
+<option value="">Select Course Interest</option>
+
+<option>Artificial Intelligence</option>
+
+<option>Full Stack Development</option>
+
+<option>Python Programming</option>
+
+<option>Data Science</option>
+
+<option>Cloud Computing</option>
+
+<option>Cyber Security</option>
+
+</select>
+
+<button
+type="button"
+onclick="registerUser()">
+Create Account
+</button>
+
+<p>
+Already have an account?
+<a href="login.html">Login Here</a>
+</p>
+
+<p>
+<a href="index.html">← Back to Home</a>
+</p>
+
+</form>
+
+</div>
+
+</div>
+<script src="js/storage.js"></script>
+<script src="js/state.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+
+</html>
