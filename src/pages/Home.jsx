@@ -49,7 +49,7 @@ function Home() {
             <div className="hero-buttons">
 
               <Link
-                to="/register"
+                to="/student-register"
                 className="hero-primary-button"
               >
                 🚀 Get Started
@@ -543,7 +543,7 @@ function Home() {
 
 
           <Link
-            to="/register"
+            to="/student-register"
             className="cta-button"
           >
             Create Account →

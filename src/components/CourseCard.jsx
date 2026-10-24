@@ -25,7 +25,7 @@ function CourseCard({ course }) {
         "Please login before enrolling in a course."
       );
 
-      navigate("/login");
+      navigate("/student-login");
       return;
     }
 

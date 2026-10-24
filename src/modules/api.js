@@ -192,6 +192,162 @@ export function getAssignment(
 
 
 // ==========================================
+// SAVE MODULE NOTE
+// ==========================================
+
+export function saveModuleNote(
+  email,
+  courseId,
+  moduleId,
+  note
+) {
+  localStorage.setItem(
+    `moduleNote_${email}_${courseId}_${moduleId}`,
+    JSON.stringify(note || "")
+  );
+}
+
+
+// ==========================================
+// GET MODULE NOTE
+// ==========================================
+
+export function getModuleNote(
+  email,
+  courseId,
+  moduleId
+) {
+
+  try {
+
+    const savedNote = JSON.parse(
+      localStorage.getItem(
+        `moduleNote_${email}_${courseId}_${moduleId}`
+      )
+    );
+
+    return typeof savedNote === "string"
+      ? savedNote
+      : "";
+
+  } catch (error) {
+
+    console.error(
+      "Error loading module note:",
+      error
+    );
+
+    return "";
+  }
+}
+
+
+// ==========================================
+// SAVE MODULE BOOKMARK
+// ==========================================
+
+export function saveModuleBookmark(
+  email,
+  courseId,
+  moduleId,
+  isBookmarked
+) {
+  localStorage.setItem(
+    `moduleBookmark_${email}_${courseId}_${moduleId}`,
+    JSON.stringify(Boolean(isBookmarked))
+  );
+}
+
+
+// ==========================================
+// GET MODULE BOOKMARK
+// ==========================================
+
+export function getModuleBookmark(
+  email,
+  courseId,
+  moduleId
+) {
+
+  try {
+
+    const savedBookmark = JSON.parse(
+      localStorage.getItem(
+        `moduleBookmark_${email}_${courseId}_${moduleId}`
+      )
+    );
+
+    return savedBookmark === true;
+
+  } catch (error) {
+
+    console.error(
+      "Error loading module bookmark:",
+      error
+    );
+
+    return false;
+  }
+}
+
+
+// ==========================================
+// GET BOOKMARKED MODULES
+// ==========================================
+
+export function getBookmarkedModules(email) {
+
+  if (!email) {
+    return [];
+  }
+
+  const prefix = `moduleBookmark_${email}_`;
+  const bookmarkedModules = [];
+
+  for (
+    let index = 0;
+    index < localStorage.length;
+    index += 1
+  ) {
+
+    const key = localStorage.key(index);
+
+    if (!key || !key.startsWith(prefix)) {
+      continue;
+    }
+
+    try {
+
+      const isBookmarked = JSON.parse(
+        localStorage.getItem(key)
+      );
+
+      if (isBookmarked !== true) {
+        continue;
+      }
+
+      const remainder = key.slice(prefix.length);
+      const [courseId, ...moduleParts] = remainder.split("_");
+
+      bookmarkedModules.push({
+        courseId,
+        moduleId: moduleParts.length > 0 ? moduleParts.join("_") : "0"
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Error loading bookmarked module:",
+        error
+      );
+    }
+  }
+
+  return bookmarkedModules;
+}
+
+
+// ==========================================
 // GET COMPLETED MODULES
 // ==========================================
 

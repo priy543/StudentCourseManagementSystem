@@ -10,6 +10,26 @@ import api from "../services/api";
 
 const CourseContext = createContext(null);
 
+function getCourseFromResponse(response) {
+  const course = response.data?.data;
+
+  if (!course || typeof course.id !== "string") {
+    throw new Error("The course API returned an invalid course response.");
+  }
+
+  return course;
+}
+
+function getCoursesFromResponse(response) {
+  const courses = response.data?.data;
+
+  if (!Array.isArray(courses)) {
+    throw new Error("The course API returned an invalid course list.");
+  }
+
+  return courses;
+}
+
 export function CourseProvider({ children }) {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +45,7 @@ export function CourseProvider({ children }) {
 
       const response = await api.get("/courses");
 
-      setCourses(response.data);
+      setCourses(getCoursesFromResponse(response));
 
       setError(null);
     } catch (error) {
@@ -35,12 +55,21 @@ export function CourseProvider({ children }) {
       );
 
       setError(
-        "Unable to load courses. Please make sure the API server is running."
+        error.response?.data?.error?.message ||
+          "Unable to load courses. Please make sure the API server is running."
       );
     } finally {
       setLoading(false);
     }
   }, []);
+
+  async function getCourseById(id) {
+    const response = await api.get(
+      `/courses/${encodeURIComponent(id)}`
+    );
+
+    return getCourseFromResponse(response);
+  }
 
   // ==========================================
   // LOAD COURSES WHEN APPLICATION STARTS
@@ -60,13 +89,14 @@ export function CourseProvider({ children }) {
         "/courses",
         course
       );
+      const createdCourse = getCourseFromResponse(response);
 
       setCourses((previousCourses) => [
         ...previousCourses,
-        response.data
+        createdCourse
       ]);
 
-      return response.data;
+      return createdCourse;
     } catch (error) {
       console.error(
         "Failed to add course:",
@@ -90,16 +120,17 @@ export function CourseProvider({ children }) {
         `/courses/${id}`,
         updatedCourse
       );
+      const savedCourse = getCourseFromResponse(response);
 
       setCourses((previousCourses) =>
         previousCourses.map((course) =>
           String(course.id) === String(id)
-            ? response.data
+            ? savedCourse
             : course
         )
       );
 
-      return response.data;
+      return savedCourse;
     } catch (error) {
       console.error(
         "Failed to update course:",
@@ -147,6 +178,7 @@ export function CourseProvider({ children }) {
         loading,
         error,
         fetchCourses,
+        getCourseById,
         addCourse,
         updateCourse,
         deleteCourse

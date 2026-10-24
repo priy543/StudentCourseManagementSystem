@@ -45,7 +45,7 @@ function Profile() {
     useState(null);
 
   if (!isStudentLoggedIn() || !student) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/student-login" replace />;
   }
 
   function handleProfileChange(event) {
@@ -139,7 +139,7 @@ function Profile() {
 
   function handleLogout() {
     logoutStudent();
-    navigate("/login");
+    navigate("/student-login");
   }
 
   return (

@@ -1,16 +1,56 @@
-# React + Vite
+# Student Course Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A course-learning application with student registration and login, course browsing and enrollment, learning modules and quizzes, progress tracking, profiles, certificates, and administrative course management.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React, JavaScript, and CSS with Vite and React Router
+- Axios for API requests
+- Node.js, Express, and MongoDB with Mongoose
+- jsPDF for course certificate downloads
 
-## React Compiler
+## Requirements
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js and npm
+- MongoDB available to the backend
 
-## Expanding the Oxlint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Install frontend dependencies in the project root:
+
+```sh
+npm install
+```
+
+Configure `backend/.env` with `MONGO_URI` and optionally `PORT` (defaults to `5001`). Then install backend dependencies:
+
+```sh
+cd backend
+npm install
+```
+
+Run the backend and frontend in separate terminals:
+
+```sh
+cd backend
+npm run dev
+```
+
+```sh
+npm run dev
+```
+
+Vite serves the frontend at the URL printed in its terminal, normally `http://localhost:5173`.
+
+## Checks
+
+From the project root:
+
+```sh
+npm run build
+npm run lint
+```
+
+## Security Notes
+
+Student authentication and password reset currently use browser local storage and are not suitable for production accounts. Do not commit `.env` files, credentials, tokens, or real student data. Review authentication, authorization, and password storage before production deployment.

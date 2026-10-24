@@ -37,7 +37,17 @@ function App() {
         />
 
         <Route
+          path="/student-login"
+          element={<Login />}
+        />
+
+        <Route
           path="/register"
+          element={<Register />}
+        />
+
+        <Route
+          path="/student-register"
           element={<Register />}
         />
 
@@ -78,6 +88,11 @@ function App() {
 
         <Route
           path="/admin-dashboard"
+          element={<AdminDashboard />}
+        />
+
+        <Route
+          path="/admin/overview"
           element={<AdminDashboard />}
         />
 

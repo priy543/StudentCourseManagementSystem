@@ -124,7 +124,7 @@ function ForgotPassword() {
         <p>
           Remember your password?{" "}
 
-          <Link to="/login">
+          <Link to="/student-login">
             Login
           </Link>
 

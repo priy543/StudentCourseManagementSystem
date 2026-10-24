@@ -64,7 +64,7 @@ function Register() {
       "Registration Successful!"
     );
 
-    navigate("/login");
+    navigate("/student-login");
   }
 
   return (
@@ -164,6 +164,10 @@ function Register() {
               Artificial Intelligence
             </option>
 
+            <option value="Data Analytics">
+              Data Analytics
+            </option>
+
           </select>
 
           <br />
@@ -177,7 +181,7 @@ function Register() {
 
         <p>
           Already have an account?{" "}
-          <Link to="/login">
+          <Link to="/student-login">
             Login
           </Link>
         </p>

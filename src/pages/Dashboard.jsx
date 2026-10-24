@@ -11,7 +11,8 @@ import {
 } from "../modules/auth";
 
 import {
-  getEnrolledCourses
+  getEnrolledCourses,
+  getBookmarkedModules
 } from "../modules/api";
 
 import { useCourses } from "../context/CourseContext";
@@ -119,6 +120,142 @@ function DashboardCourseSection({
   );
 }
 
+function getModuleTitle(module) {
+  if (typeof module === "string") {
+    return module;
+  }
+
+  return module?.title || module?.name || "Untitled module";
+}
+
+
+function getSavedCompletedModules(email, courseId) {
+  if (!email || !courseId) {
+    return [];
+  }
+
+  try {
+    const storedModules = JSON.parse(
+      localStorage.getItem(`completedModules_${email}_${courseId}`) || "[]"
+    );
+
+    return Array.isArray(storedModules)
+      ? storedModules
+      : [];
+  } catch (error) {
+    console.error(
+      "Error loading completed modules:",
+      error
+    );
+
+    return [];
+  }
+}
+
+function normalizeQuizScore(value) {
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) {
+      return null;
+    }
+
+    if (value <= 1) {
+      return Math.round(value * 100);
+    }
+
+    if (value <= 100) {
+      return Math.round(value);
+    }
+
+    return null;
+  }
+
+  if (typeof value === "string") {
+    const numericValue = Number(value);
+
+    if (!Number.isFinite(numericValue)) {
+      return null;
+    }
+
+    return normalizeQuizScore(numericValue);
+  }
+
+  if (value && typeof value === "object") {
+    const nestedValue =
+      value.score ??
+      value.quizScore ??
+      value.percentage ??
+      value.percent ??
+      value.average ??
+      value.correct;
+
+    if (typeof nestedValue === "number") {
+      return normalizeQuizScore(nestedValue);
+    }
+
+    const correctAnswers = Number(value.correct ?? value.score ?? 0);
+    const totalQuestions = Number(value.total ?? value.totalQuestions ?? value.questions ?? 0);
+
+    if (totalQuestions > 0 && Number.isFinite(correctAnswers)) {
+      return Math.min(100, Math.round((correctAnswers / totalQuestions) * 100));
+    }
+  }
+
+  return null;
+}
+
+function getReliableAverageQuizScore(email) {
+  if (!email) {
+    return null;
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+  const scores = [];
+
+  for (let index = 0; index < localStorage.length; index += 1) {
+    const key = localStorage.key(index);
+
+    if (!key) {
+      continue;
+    }
+
+    const normalizedKey = key.toLowerCase();
+
+    if (
+      !normalizedKey.includes("quiz") &&
+      !normalizedKey.includes("score")
+    ) {
+      continue;
+    }
+
+    if (!normalizedKey.includes(normalizedEmail)) {
+      continue;
+    }
+
+    try {
+      const rawValue = JSON.parse(localStorage.getItem(key));
+      const normalizedScore = normalizeQuizScore(rawValue);
+
+      if (normalizedScore !== null) {
+        scores.push(normalizedScore);
+      }
+    } catch (error) {
+      const rawValue = localStorage.getItem(key);
+      const normalizedScore = normalizeQuizScore(rawValue);
+
+      if (normalizedScore !== null) {
+        scores.push(normalizedScore);
+      }
+    }
+  }
+
+  if (scores.length === 0) {
+    return null;
+  }
+
+  return Math.round(
+    scores.reduce((total, score) => total + score, 0) / scores.length
+  );
+}
 
 function Dashboard() {
 
@@ -154,7 +291,7 @@ function Dashboard() {
   useEffect(() => {
 
     if (!isStudentLoggedIn() || !student) {
-      navigate("/login");
+      navigate("/student-login");
     }
 
   }, [navigate, student]);
@@ -168,7 +305,7 @@ function Dashboard() {
 
     logoutStudent();
 
-    navigate("/login");
+    navigate("/student-login");
 
   }
 
@@ -231,6 +368,101 @@ function Dashboard() {
   const recentEnrollments = dashboardCourses
     .slice(-3)
     .reverse();
+
+  const analyticsCourses = dashboardCourses.map((course) => {
+    const completedModules = getSavedCompletedModules(
+      student?.email,
+      course.id
+    );
+
+    const totalModules =
+      Array.isArray(course.modules) && course.modules.length > 0
+        ? course.modules.length
+        : 0;
+
+    return {
+      ...course,
+      completedModules,
+      completedModuleCount: completedModules.length,
+      totalModules
+    };
+  });
+
+  const totalModulesCompleted = analyticsCourses.reduce(
+    (total, course) => total + course.completedModuleCount,
+    0
+  );
+
+  const averageQuizScore = getReliableAverageQuizScore(student?.email || "");
+
+  const achievementBadges = [
+    {
+      name: "First Step",
+      description: "Complete your first learning module.",
+      icon: "👣",
+      earned: totalModulesCompleted >= 1
+    },
+    {
+      name: "Module Master",
+      description: "Complete at least five learning modules.",
+      icon: "📘",
+      earned: totalModulesCompleted >= 5
+    },
+    {
+      name: "Course Graduate",
+      description: "Complete at least one course.",
+      icon: "🎓",
+      earned: completedCourses >= 1
+    },
+    {
+      name: "Knowledge Seeker",
+      description: "Enroll in at least three courses.",
+      icon: "🔎",
+      earned: totalEnrolled >= 3
+    },
+    {
+      name: "Quiz Champion",
+      description: "Achieve an average quiz score of at least 80%.",
+      icon: "🏅",
+      earned: averageQuizScore !== null && averageQuizScore >= 80
+    },
+    {
+      name: "Learning Legend",
+      description: "Complete at least three courses.",
+      icon: "🌟",
+      earned: completedCourses >= 3
+    }
+  ];
+
+  const dashboardBookmarkedModules = student?.email
+    ? getBookmarkedModules(student.email).flatMap(({ courseId, moduleId }) => {
+        const matchingCourse = dashboardCourses.find(
+          (course) => String(course.id) === String(courseId)
+        );
+
+        if (!matchingCourse) {
+          return [];
+        }
+
+        const courseModules = Array.isArray(matchingCourse.modules)
+          ? matchingCourse.modules
+          : [];
+
+        const moduleIndex = Number(moduleId);
+        const moduleTitle = courseModules[moduleIndex]
+          ? getModuleTitle(courseModules[moduleIndex])
+          : `Module ${moduleIndex + 1}`;
+
+        return [{
+          courseId: String(matchingCourse.id),
+          courseName: matchingCourse.courseName,
+          courseCode: matchingCourse.courseCode,
+          moduleId: String(moduleIndex),
+          moduleNumber: moduleIndex + 1,
+          moduleTitle
+        }];
+      })
+    : [];
 
 
   // =====================================================
@@ -528,6 +760,222 @@ function Dashboard() {
             </span>
 
           </div>
+
+        </section>
+
+
+        {/* =================================================
+            LEARNING ANALYTICS
+        ================================================= */}
+
+        <section className="dashboard-analytics-section" aria-labelledby="learning-analytics-title">
+
+          <div className="dashboard-section-header">
+
+            <div>
+
+              <span className="dashboard-label">
+                LEARNING ANALYTICS
+              </span>
+
+              <h2 id="learning-analytics-title">
+                Learning Analytics
+              </h2>
+
+              <p>
+                Real progress from your saved enrollments, completed modules, and available quiz history.
+              </p>
+
+            </div>
+
+          </div>
+
+          {dashboardCourses.length === 0 ? (
+            <div className="dashboard-section-empty">
+              <p>Analytics will appear here after you enroll in a course.</p>
+            </div>
+          ) : (
+            <>
+              <div className="dashboard-analytics-grid">
+
+                <div className="dashboard-analytics-card">
+                  <span>OVERALL PROGRESS</span>
+                  <strong>{overallProgress}%</strong>
+                  <small>{completedCourses} completed · {inProgressCourses} in progress</small>
+                </div>
+
+                <div className="dashboard-analytics-card">
+                  <span>COURSES COMPLETED</span>
+                  <strong>{completedCourses}</strong>
+                  <small>Finished courses</small>
+                </div>
+
+                <div className="dashboard-analytics-card">
+                  <span>COURSES IN PROGRESS</span>
+                  <strong>{inProgressCourses}</strong>
+                  <small>Active enrollments</small>
+                </div>
+
+                <div className="dashboard-analytics-card">
+                  <span>MODULES COMPLETED</span>
+                  <strong>{totalModulesCompleted}</strong>
+                  <small>Across all enrolled courses</small>
+                </div>
+
+                {averageQuizScore !== null && (
+                  <div className="dashboard-analytics-card">
+                    <span>AVERAGE QUIZ SCORE</span>
+                    <strong>{averageQuizScore}%</strong>
+                    <small>Stored quiz results</small>
+                  </div>
+                )}
+
+              </div>
+
+              <div className="dashboard-analytics-course-list">
+                {analyticsCourses.map((course) => {
+                  const totalModules = course.totalModules;
+                  const completedCount = course.completedModuleCount;
+                  const moduleMeta =
+                    totalModules > 0
+                      ? `${completedCount} / ${totalModules} modules completed`
+                      : `${completedCount} modules completed`;
+
+                  return (
+                    <div key={String(course.id)} className="dashboard-analytics-course">
+                      <div className="dashboard-analytics-course-header">
+                        <div>
+                          <strong>{course.courseName}</strong>
+                          <small>{course.courseCode} · {course.instructor}</small>
+                        </div>
+                        <span>{course.progress}%</span>
+                      </div>
+
+                      <div className="course-progress-bar" aria-hidden="true">
+                        <div
+                          className="course-progress-fill"
+                          style={{ width: `${course.progress}%` }}
+                        />
+                      </div>
+
+                      <div className="dashboard-analytics-course-meta">
+                        <span>{moduleMeta}</span>
+                        <em>
+                          {course.progress === 100
+                            ? "Completed"
+                            : course.progress > 0
+                              ? "In progress"
+                              : "Not started"}
+                        </em>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+        </section>
+
+
+        <section className="dashboard-badges-section" aria-labelledby="achievement-badges-title">
+
+          <div className="dashboard-section-header">
+
+            <div>
+
+              <span className="dashboard-label">
+                MILESTONES
+              </span>
+
+              <h2 id="achievement-badges-title">
+                Achievement Badges
+              </h2>
+
+              <p>
+                Badges reflect your saved course, module, and quiz activity.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div className="dashboard-badge-grid">
+            {achievementBadges.map((badge) => (
+              <article
+                key={badge.name}
+                className={`dashboard-badge-card ${badge.earned ? "earned" : "locked"}`}
+                aria-label={`${badge.name}: ${badge.earned ? "Earned" : "Locked"}`}
+              >
+                <span className="dashboard-badge-icon" aria-hidden="true">
+                  {badge.icon}
+                </span>
+
+                <div className="dashboard-badge-copy">
+                  <h3>{badge.name}</h3>
+                  <p>{badge.description}</p>
+                </div>
+
+                <span className="dashboard-badge-status">
+                  {badge.earned ? "Earned" : "Locked"}
+                </span>
+              </article>
+            ))}
+          </div>
+
+        </section>
+
+
+        <section className="dashboard-bookmarks-section" aria-labelledby="saved-bookmarks-title">
+
+          <div className="dashboard-section-header">
+
+            <div>
+
+              <span className="dashboard-label">
+                BOOKMARKS
+              </span>
+
+              <h2 id="saved-bookmarks-title">
+                Saved Module Bookmarks
+              </h2>
+
+              <p>
+                Jump back to the topics you want to review later.
+              </p>
+
+            </div>
+
+          </div>
+
+          {dashboardBookmarkedModules.length > 0 ? (
+            <div className="dashboard-bookmark-list">
+              {dashboardBookmarkedModules.map((bookmark) => (
+                <Link
+                  key={`${bookmark.courseId}-${bookmark.moduleId}`}
+                  className="dashboard-bookmark-item"
+                  to={`/learning/${bookmark.courseId}?module=${bookmark.moduleId}`}
+                >
+                  <span className="dashboard-bookmark-mark" aria-hidden="true">
+                    ★
+                  </span>
+
+                  <span className="dashboard-bookmark-copy">
+                    <strong>{bookmark.moduleTitle}</strong>
+                    <small>{bookmark.courseName} · {bookmark.courseCode}</small>
+                  </span>
+
+                  <span className="dashboard-bookmark-module">
+                    Module {bookmark.moduleNumber}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="dashboard-section-empty">
+              <p>No bookmarked modules yet. Use the bookmark button while you learn to save key review topics.</p>
+            </div>
+          )}
 
         </section>
 

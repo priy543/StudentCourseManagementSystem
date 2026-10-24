@@ -82,7 +82,7 @@ function AdminLogin() {
 
 
     navigate(
-      "/admin-dashboard"
+      "/admin/overview"
     );
   }
 
@@ -93,7 +93,7 @@ function AdminLogin() {
 
       <Navbar />
 
-      <main className="login-page">
+      <main className="login-page admin-login-page">
 
         <h1>
           🔐 Admin Login
@@ -150,7 +150,7 @@ function AdminLogin() {
           <button
             type="button"
             onClick={() =>
-              navigate("/login")
+              navigate("/student-login")
             }
           >
             Student Login

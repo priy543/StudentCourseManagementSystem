@@ -132,7 +132,7 @@ function ResetPassword() {
     );
 
 
-    navigate("/login");
+    navigate("/student-login");
   }
 
 
@@ -193,7 +193,7 @@ function ResetPassword() {
         <p>
           Remember your password?{" "}
 
-          <Link to="/login">
+          <Link to="/student-login">
             Login
           </Link>
 
