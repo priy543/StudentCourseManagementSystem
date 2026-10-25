@@ -1,5 +1,6 @@
 
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Student = require("../models/Student");
 
 // Register a student
@@ -14,7 +15,7 @@ const register = async (req, res, next) => {
       });
     }
 
-    if (password.length < 8) {
+    if (typeof password !== "string" || password.length < 8) {
       return res.status(400).json({
         success: false,
         message: "Password must contain at least 8 characters."
@@ -67,12 +68,17 @@ const register = async (req, res, next) => {
   }
 };
 
-// Log in a student
+// Log in a student and issue a JWT
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
+    if (
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      !email.trim() ||
+      !password
+    ) {
       return res.status(400).json({
         success: false,
         message: "Please provide email and password."
@@ -102,9 +108,29 @@ const login = async (req, res, next) => {
       });
     }
 
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: "Authentication is not configured on the server."
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id: student._id.toString(),
+        email: student.email
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN || "1d",
+        issuer: "student-course-management"
+      }
+    );
+
     return res.status(200).json({
       success: true,
       message: "Login successful.",
+      token,
       student: {
         id: student._id,
         name: student.name,

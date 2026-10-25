@@ -119,12 +119,27 @@ export function getLoggedInStudent() {
 
   const students = getStudents();
 
-  return (
+  const localStudent =
     students.find(
       (student) =>
         student.email === email
-    ) || null
-  );
+    );
+
+  if (localStudent) {
+    return localStudent;
+  }
+
+  try {
+    const sessionStudent = JSON.parse(
+      sessionStorage.getItem("student") || "null"
+    );
+
+    return sessionStudent?.email === email
+      ? sessionStudent
+      : null;
+  } catch {
+    return null;
+  }
 }
 
 export function updateStudentProfile(
@@ -257,6 +272,9 @@ export function logoutStudent() {
   localStorage.removeItem(
     "loggedInUser"
   );
+
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("student");
 }
 
 // ==========================================
