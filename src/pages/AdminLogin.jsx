@@ -3,9 +3,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 
-import {
-  loginAdmin
-} from "../modules/auth";
+import api, { getApiErrorMessage } from "../services/api";
+import { logoutAdmin } from "../modules/auth";
 
 import {
   showSuccess,
@@ -23,16 +22,11 @@ function AdminLogin() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
 
-  function handleAdminLogin(event) {
-
+  async function handleAdminLogin(event) {
     event.preventDefault();
-
-
-    /* ==============================
-       VALIDATE LOGIN
-    ============================== */
 
     const errors =
       validateLogin(
@@ -50,40 +44,42 @@ function AdminLogin() {
       return;
     }
 
+    try {
+      setLoading(true);
 
-    /* ==============================
-       ADMIN LOGIN
-    ============================== */
-
-    const result =
-      loginAdmin(
-        email,
+      const response = await api.post("/auth/login", {
+        email: email.trim().toLowerCase(),
         password
-      );
+      });
+      const { token, student } = response.data;
 
+      if (!token || !student || typeof student.role !== "string") {
+        showError("The server did not return valid login details.");
+        return;
+      }
 
-    if (!result.success) {
+      if (student.role !== "admin") {
+        logoutAdmin();
+        showError("Access denied. This account does not have administrator privileges.");
+        return;
+      }
 
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("student", JSON.stringify(student));
+      localStorage.setItem("loggedInUser", student.email);
+
+      showSuccess("Admin login successful!");
+      navigate("/admin/overview");
+    } catch (error) {
       showError(
-        result.message
+        getApiErrorMessage(
+          error,
+          "Unable to connect to the server. Please try again."
+        )
       );
-
-      return;
+    } finally {
+      setLoading(false);
     }
-
-
-    /* ==============================
-       SUCCESS
-    ============================== */
-
-    showSuccess(
-      "Admin login successful!"
-    );
-
-
-    navigate(
-      "/admin/overview"
-    );
   }
 
 
@@ -137,8 +133,8 @@ function AdminLogin() {
           <br />
 
 
-          <button type="submit">
-            Admin Login
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Admin Login"}
           </button>
 
         </form>

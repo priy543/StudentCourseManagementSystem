@@ -37,12 +37,15 @@ const register = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    // Public registration always creates a student account.
+    // Never accept the role from req.body.
     const student = await Student.create({
       name: name.trim(),
       email: normalizedEmail,
       password: hashedPassword,
       department: department.trim(),
-      course: course.trim()
+      course: course.trim(),
+      role: "student"
     });
 
     return res.status(201).json({
@@ -53,7 +56,8 @@ const register = async (req, res, next) => {
         name: student.name,
         email: student.email,
         department: student.department,
-        course: student.course
+        course: student.course,
+        role: student.role
       }
     });
   } catch (error) {
@@ -115,10 +119,12 @@ const login = async (req, res, next) => {
       });
     }
 
+    // Include the role stored in the database in the signed JWT.
     const token = jwt.sign(
       {
         id: student._id.toString(),
-        email: student.email
+        email: student.email,
+        role: student.role || "student"
       },
       process.env.JWT_SECRET,
       {
@@ -136,7 +142,8 @@ const login = async (req, res, next) => {
         name: student.name,
         email: student.email,
         department: student.department,
-        course: student.course
+        course: student.course,
+        role: student.role || "student"
       }
     });
   } catch (error) {

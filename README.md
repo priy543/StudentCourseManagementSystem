@@ -29,6 +29,26 @@ cd backend
 npm install
 ```
 
+## Create an Admin Account
+
+To create an admin account, configure these values in your local `backend/.env` file (replace the placeholders with your own values):
+
+```dotenv
+MONGO_URI=<your-MongoDB-connection-string>
+ADMIN_EMAIL=<admin-email-address>
+ADMIN_PASSWORD=<private-password-of-at-least-12-characters>
+```
+
+Use an email address for the admin and a password of at least 12 characters. The `.env` file is ignored by Git; do not commit it or share its values.
+
+From the `backend` directory, run:
+
+```sh
+node scripts/createAdmin.js
+```
+
+The script creates an admin only when the normalized email is not already registered. If an account already exists, it makes no changes; it does not promote the account or reset its password. The script does not print the password or its hash.
+
 Run the backend and frontend in separate terminals:
 
 ```sh

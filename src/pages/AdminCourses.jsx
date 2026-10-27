@@ -11,6 +11,7 @@ import {
   showSuccess
 } from "../modules/ui";
 
+import { getApiErrorMessage } from "../services/api";
 import { useCourses } from "../context/CourseContext";
 
 function getDurationInDays(duration) {
@@ -390,7 +391,10 @@ function AdminCourses() {
 
 
       showError(
-        "Unable to save the course. Please check that the API server is running."
+        getApiErrorMessage(
+          error,
+          "Unable to save the course. Please check that the API server is running."
+        )
       );
 
     }
@@ -437,7 +441,10 @@ function AdminCourses() {
 
 
       showError(
-        "Unable to delete the course."
+        getApiErrorMessage(
+          error,
+          "Unable to delete the course."
+        )
       );
 
     }

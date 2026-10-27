@@ -1,6 +1,16 @@
 
 import axios from "axios";
 
+export function getApiErrorMessage(error, fallback) {
+  return (
+    error?.response?.data?.error?.message ||
+    error?.response?.data?.message ||
+    (error?.response?.status === 403
+      ? "You are not authorized to perform this action."
+      : fallback)
+  );
+}
+
 const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_BASE_URL ||
@@ -32,6 +42,7 @@ api.interceptors.response.use(
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("student");
       localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("adminLoggedIn");
     }
 
     return Promise.reject(error);

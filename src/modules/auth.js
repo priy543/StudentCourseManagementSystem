@@ -277,54 +277,25 @@ export function logoutStudent() {
   sessionStorage.removeItem("student");
 }
 
-// ==========================================
-// ADMIN AUTHENTICATION
-// ==========================================
-
-export function loginAdmin(
-  email,
-  password
-) {
-  const adminEmail =
-    "admin@gmail.com";
-
-  const adminPassword =
-    "admin123";
-
-  if (
-    email.trim().toLowerCase() ===
-      adminEmail &&
-    password === adminPassword
-  ) {
-    localStorage.setItem(
-      "adminLoggedIn",
-      "true"
-    );
-
-    return {
-      success: true,
-      message:
-        "Admin login successful."
-    };
+export function isAdminLoggedIn() {
+  if (!sessionStorage.getItem("token")) {
+    return false;
   }
 
-  return {
-    success: false,
-    message:
-      "Invalid admin email or password."
-  };
-}
+  try {
+    const student = JSON.parse(
+      sessionStorage.getItem("student") || "null"
+    );
 
-export function isAdminLoggedIn() {
-  return (
-    localStorage.getItem(
-      "adminLoggedIn"
-    ) === "true"
-  );
+    return student?.role === "admin";
+  } catch {
+    return false;
+  }
 }
 
 export function logoutAdmin() {
-  localStorage.removeItem(
-    "adminLoggedIn"
-  );
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("student");
+  localStorage.removeItem("loggedInUser");
+  localStorage.removeItem("adminLoggedIn");
 }

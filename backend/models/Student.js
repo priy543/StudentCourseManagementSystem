@@ -29,6 +29,11 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true
+    },
+    role: {
+      type: String,
+      enum: ["student", "admin"],
+      default: "student"
     }
   },
   {
