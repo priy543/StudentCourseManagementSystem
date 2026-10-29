@@ -1,11 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 
-import { getStudents, saveStudents } from "../modules/auth";
+import api, { getApiErrorMessage } from "../services/api";
 import { isValidPassword, passwordsMatch } from "../modules/validation";
 import { showError, showSuccess } from "../modules/ui";
+
+function readResetToken() {
+  return new URLSearchParams(
+    window.location.hash.slice(1)
+  ).get("token") || "";
+}
+
+function clearResetTokenFromUrl() {
+  window.history.replaceState(
+    null,
+    "",
+    `${window.location.pathname}${window.location.search}`
+  );
+}
 
 function ResetPassword() {
 
@@ -13,126 +27,60 @@ function ResetPassword() {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [token] = useState(readResetToken);
+  const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    clearResetTokenFromUrl();
+  }, []);
 
-  function handleReset(event) {
-
+  async function handleReset(event) {
     event.preventDefault();
 
-
-    /* ==============================
-       GET RESET EMAIL
-    ============================== */
-
-    const resetEmail =
-      localStorage.getItem("resetPasswordEmail");
-
-
-    if (!resetEmail) {
-
+    if (!token) {
       showError(
-        "Password reset session expired. Please try again."
+        "Password reset link is invalid or expired. Please request a new one."
       );
-
       navigate("/forgot-password");
-
       return;
     }
 
-
-    /* ==============================
-       PASSWORD VALIDATION
-    ============================== */
-
     if (!isValidPassword(password)) {
-
       showError(
         "Password must contain at least 8 characters."
       );
-
       return;
     }
 
-
     if (!passwordsMatch(password, confirmPassword)) {
-
       showError(
         "Passwords do not match."
       );
-
       return;
     }
 
+    try {
+      setLoading(true);
+      const response = await api.post("/auth/reset-password", {
+        token,
+        newPassword: password
+      });
 
-    /* ==============================
-       GET STUDENTS
-    ============================== */
-
-    const students = getStudents();
-
-
-    /* ==============================
-       FIND STUDENT
-    ============================== */
-
-    const studentIndex =
-      students.findIndex(
-        (student) =>
-          student.email === resetEmail
+      showSuccess(
+        response.data.message ||
+          "Password reset successfully. Please sign in again."
       );
-
-
-    if (studentIndex === -1) {
-
+      navigate("/student-login");
+    } catch (error) {
       showError(
-        "Student account could not be found."
+        getApiErrorMessage(
+          error,
+          "Unable to reset the password. Please request a new reset link."
+        )
       );
-
-      localStorage.removeItem(
-        "resetPasswordEmail"
-      );
-
-      navigate("/forgot-password");
-
-      return;
+    } finally {
+      setLoading(false);
     }
-
-
-    /* ==============================
-       UPDATE PASSWORD
-    ============================== */
-
-    students[studentIndex] = {
-
-      ...students[studentIndex],
-
-      password: password
-
-    };
-
-
-    /* ==============================
-       SAVE STUDENTS
-    ============================== */
-
-    saveStudents(students);
-
-
-    /* ==============================
-       CLEAR RESET SESSION
-    ============================== */
-
-    localStorage.removeItem(
-      "resetPasswordEmail"
-    );
-
-
-    showSuccess(
-      "Password reset successfully!"
-    );
-
-
-    navigate("/student-login");
   }
 
 
@@ -183,8 +131,8 @@ function ResetPassword() {
           <br />
 
 
-          <button type="submit">
-            Reset Password
+          <button type="submit" disabled={loading}>
+            {loading ? "Resetting..." : "Reset Password"}
           </button>
 
         </form>

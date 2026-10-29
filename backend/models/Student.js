@@ -34,6 +34,19 @@ const studentSchema = new mongoose.Schema(
       type: String,
       enum: ["student", "admin"],
       default: "student"
+    },
+    authVersion: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    passwordResetTokenHash: {
+      type: String,
+      select: false
+    },
+    passwordResetExpires: {
+      type: Date,
+      select: false
     }
   },
   {

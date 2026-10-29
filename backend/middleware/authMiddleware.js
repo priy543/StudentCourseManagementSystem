@@ -1,7 +1,10 @@
 
 const jwt = require("jsonwebtoken");
+const Student = require("../models/Student");
 
-const protect = (req, res, next) => {
+const protect = async (req, res, next) => {
+  let decoded;
+
   try {
     const authHeader = req.headers.authorization;
 
@@ -28,22 +31,47 @@ const protect = (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+    decoded = jwt.verify(token, process.env.JWT_SECRET, {
       issuer: "student-course-management"
     });
-
-    req.user = {
-      id: decoded.id,
-      email: decoded.email,
-      role: decoded.role || "student"
-    };
-
-    next();
-  } catch (error) {
+  } catch {
     return res.status(401).json({
       success: false,
       message: "Invalid or expired token."
     });
+  }
+
+  if (typeof decoded.id !== "string") {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired token."
+    });
+  }
+
+  try {
+    const student = await Student.findById(decoded.id).select(
+      "email role authVersion"
+    );
+    const authVersion = student?.authVersion || 0;
+    const tokenVersion = decoded.authVersion || 0;
+
+    if (!student || tokenVersion !== authVersion) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid or expired token."
+      });
+    }
+
+    req.user = {
+      id: student._id.toString(),
+      email: student.email,
+      role: student.role || "student",
+      authVersion
+    };
+
+    return next();
+  } catch (error) {
+    return next(error);
   }
 };
 

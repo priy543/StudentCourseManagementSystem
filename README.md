@@ -49,6 +49,29 @@ node scripts/createAdmin.js
 
 The script creates an admin only when the normalized email is not already registered. If an account already exists, it makes no changes; it does not promote the account or reset its password. The script does not print the password or its hash.
 
+## Password Recovery Email
+
+Password reset requires an SMTP service. Configure these values in `backend/.env`; keep the SMTP credentials private and do not commit the file:
+
+```dotenv
+SMTP_HOST=<smtp-host>
+SMTP_PORT=<smtp-port>
+SMTP_SECURE=<true-or-false>
+SMTP_USER=<smtp-username>
+SMTP_PASSWORD=<smtp-password>
+MAIL_FROM=<sender-address>
+FRONTEND_URL=<frontend-origin>
+```
+
+`SMTP_USER` and `SMTP_PASSWORD` must either both be set or both be omitted for an unauthenticated SMTP relay. Reset links expire after 15 minutes. Reset requests and token attempts are rate-limited. Changing or resetting a password invalidates all existing JWTs; sign in again afterward. The backend checks the stored auth version on protected requests.
+
+Backend password API tests use an isolated in-memory MongoDB and a mocked email sender:
+
+```sh
+cd backend
+npm test
+```
+
 Run the backend and frontend in separate terminals:
 
 ```sh
@@ -73,4 +96,4 @@ npm run lint
 
 ## Security Notes
 
-Student authentication and password reset currently use browser local storage and are not suitable for production accounts. Do not commit `.env` files, credentials, tokens, or real student data. Review authentication, authorization, and password storage before production deployment.
+Some legacy profile and course-progress data remains browser-local and is not suitable for production accounts. Do not commit `.env` files, credentials, tokens, or real student data. Review authentication, authorization, and password storage before production deployment.

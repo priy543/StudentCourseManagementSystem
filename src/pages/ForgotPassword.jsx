@@ -1,83 +1,48 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import { getStudents } from "../modules/auth";
+import api, { getApiErrorMessage } from "../services/api";
 import { isValidEmail } from "../modules/validation";
 import { showError, showSuccess } from "../modules/ui";
 
 function ForgotPassword() {
-
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event) {
-
+  async function handleSubmit(event) {
     event.preventDefault();
-
     const enteredEmail =
       email.trim().toLowerCase();
 
-
-    /* ==============================
-       VALIDATE EMAIL
-    ============================== */
-
     if (!isValidEmail(enteredEmail)) {
-
       showError(
         "Please enter a valid email address."
       );
-
       return;
     }
 
+    try {
+      setLoading(true);
+      const response = await api.post("/auth/forgot-password", {
+        email: enteredEmail
+      });
 
-    /* ==============================
-       GET ALL STUDENTS
-    ============================== */
-
-    const students = getStudents();
-
-
-    /* ==============================
-       FIND STUDENT
-    ============================== */
-
-    const student = students.find(
-      (item) =>
-        item.email === enteredEmail
-    );
-
-
-    if (!student) {
-
-      showError(
-        "No account found with this email address."
+      showSuccess(
+        response.data.message ||
+          "If an account with that email exists, password reset instructions will be sent."
       );
-
-      return;
+    } catch (error) {
+      showError(
+        getApiErrorMessage(
+          error,
+          "Unable to request a password reset. Please try again later."
+        )
+      );
+    } finally {
+      setLoading(false);
     }
-
-
-    /* ==============================
-       STORE RESET EMAIL
-    ============================== */
-
-    localStorage.setItem(
-      "resetPasswordEmail",
-      enteredEmail
-    );
-
-
-    showSuccess(
-      "Account found. You can now reset your password."
-    );
-
-
-    navigate("/reset-password");
   }
 
 
@@ -114,8 +79,8 @@ function ForgotPassword() {
           <br />
           <br />
 
-          <button type="submit">
-            Continue
+          <button type="submit" disabled={loading}>
+            {loading ? "Sending..." : "Continue"}
           </button>
 
         </form>

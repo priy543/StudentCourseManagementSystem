@@ -6,9 +6,11 @@ import {
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import api, { getApiErrorMessage } from "../services/api";
+import { isValidPassword, passwordsMatch } from "../modules/validation";
+import { showSuccess } from "../modules/ui";
 
 import {
-  changeStudentPassword,
   getLoggedInStudent,
   isStudentLoggedIn,
   logoutStudent,
@@ -43,6 +45,8 @@ function Profile() {
     });
   const [passwordFeedback, setPasswordFeedback] =
     useState(null);
+  const [passwordLoading, setPasswordLoading] =
+    useState(false);
 
   if (!isStudentLoggedIn() || !student) {
     return <Navigate to="/student-login" replace />;
@@ -107,34 +111,55 @@ function Profile() {
     }));
   }
 
-  function handlePasswordSubmit(event) {
+  async function handlePasswordSubmit(event) {
     event.preventDefault();
     setPasswordFeedback(null);
 
-    const result = changeStudentPassword(
-      student.email,
-      passwordFields.currentPassword,
-      passwordFields.newPassword,
-      passwordFields.confirmPassword
-    );
-
-    if (!result.success) {
+    if (!isValidPassword(passwordFields.newPassword)) {
       setPasswordFeedback({
         type: "error",
-        message: result.message
+        message: "Password must contain at least 8 characters."
       });
       return;
     }
 
-    setPasswordFields({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: ""
-    });
-    setPasswordFeedback({
-      type: "success",
-      message: result.message
-    });
+    if (
+      !passwordsMatch(
+        passwordFields.newPassword,
+        passwordFields.confirmPassword
+      )
+    ) {
+      setPasswordFeedback({
+        type: "error",
+        message: "Passwords do not match."
+      });
+      return;
+    }
+
+    try {
+      setPasswordLoading(true);
+      const response = await api.post("/auth/change-password", {
+        currentPassword: passwordFields.currentPassword,
+        newPassword: passwordFields.newPassword
+      });
+
+      showSuccess(
+        response.data.message ||
+          "Password changed successfully. Please sign in again."
+      );
+      logoutStudent();
+      navigate("/student-login");
+    } catch (error) {
+      setPasswordFeedback({
+        type: "error",
+        message: getApiErrorMessage(
+          error,
+          "Unable to change your password. Please try again."
+        )
+      });
+    } finally {
+      setPasswordLoading(false);
+    }
   }
 
   function handleLogout() {
@@ -308,8 +333,12 @@ function Profile() {
                 </div>
 
                 <div className="profile-form-actions">
-                  <button className="profile-primary-button" type="submit">
-                    Update password
+                  <button
+                    className="profile-primary-button"
+                    type="submit"
+                    disabled={passwordLoading}
+                  >
+                    {passwordLoading ? "Updating..." : "Update password"}
                   </button>
                 </div>
 
